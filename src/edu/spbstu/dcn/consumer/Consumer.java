@@ -27,7 +27,7 @@ public class Consumer implements Runnable{
 	
 	public void run(){
 		ArrayList<String> subfolders = new ArrayList<String>();
-System.out.println("   consumer_"+Thread.currentThread().getId()+" started");
+//System.out.println("   consumer_"+Thread.currentThread().getId()+" started");
 
 		for(File file : home.listFiles()){
 			if(file.isDirectory())
@@ -49,7 +49,7 @@ System.out.println("   consumer_"+Thread.currentThread().getId()+" started");
 				e.printStackTrace();
 			}
 		}
-System.out.println("   consumer_"+Thread.currentThread().getId()+" stopped");
+//System.out.println("   consumer_"+Thread.currentThread().getId()+" stopped");
 		phaser.arrive();
 	}
 	

@@ -1,1 +1,1 @@
-This is pdf/web crawler. Written in java.
+This is mp3/web crawler written in java. It requires jaudiotagger library.

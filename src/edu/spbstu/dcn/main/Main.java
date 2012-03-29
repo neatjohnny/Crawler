@@ -9,7 +9,7 @@ import java.util.concurrent.Phaser;
 import edu.spbstu.dcn.consumer.Consumer;
 
 public class Main {
-	private static final int POOL_SIZE = 1;
+	private static final int POOL_SIZE = 10;
 
 	public static void main(String[] args) {
 		Consumer consumer;

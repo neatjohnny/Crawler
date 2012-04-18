@@ -1,1 +1,1 @@
-This is mp3/web crawler written in java. It requires jaudiotagger library.
+This is mp3/web crawler written in java. It requires jaudiotagger v2.0.4 library.

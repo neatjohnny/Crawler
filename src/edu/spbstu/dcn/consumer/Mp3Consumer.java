@@ -5,19 +5,14 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.Phaser;
 
-public class Consumer implements Runnable{
+import edu.spbstu.dcn.utils.Phaser;
+
+public class Mp3Consumer extends AbstractConsumer{
 	private File home;
-	private static ExecutorService executor;
-	private static LinkedBlockingQueue<String> files;
-	private static Phaser phaser;
 
-	public Consumer(String folder, ExecutorService executor, LinkedBlockingQueue<String> files, Phaser phaser) throws FileNotFoundException{
-		phaser.register();
-		Consumer.executor = executor;
-		Consumer.files = files;
-		Consumer.phaser = phaser;
+	public Mp3Consumer(String folder, ExecutorService executor, LinkedBlockingQueue<String> files, Phaser phaser) throws FileNotFoundException{
+		super(folder, executor, files, phaser);
 		home = new File(folder);
 		if(!home.exists())
 			throw new FileNotFoundException();
@@ -27,13 +22,11 @@ public class Consumer implements Runnable{
 	
 	public void run(){
 		ArrayList<String> subfolders = new ArrayList<String>();
-//System.out.println("   consumer_"+Thread.currentThread().getId()+" started");
-
 		for(File file : home.listFiles()){
 			if(file.isDirectory())
 				subfolders.add(file.getAbsolutePath());
 			else
-				if(file.getName().endsWith(".mp3"))
+				if(file.getName().endsWith(".mp3") || file.getName().endsWith(".MP3") || file.getName().endsWith(".Mp3") || file.getName().endsWith(".mP3"))
 					try {
 						files.put(file.getAbsolutePath());
 					} catch (InterruptedException e) {
@@ -43,13 +36,12 @@ public class Consumer implements Runnable{
 		}
 		for(String file : subfolders){
 			try {
-				executor.submit(new Consumer(file, executor, files, phaser));
+				executor.submit(new Mp3Consumer(file, executor, files, phaser));
 			} catch (FileNotFoundException e) {
 				System.out.println("FORBIDDEN STATE. Subfolder not found.");
 				e.printStackTrace();
 			}
 		}
-//System.out.println("   consumer_"+Thread.currentThread().getId()+" stopped");
 		phaser.arrive();
 	}
 	
